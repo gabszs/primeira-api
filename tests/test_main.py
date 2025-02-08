@@ -1,10 +1,5 @@
-import httpx
 import random
 
-from typing import AsyncGenerator
-from httpx import ASGITransport
-from httpx import AsyncClient
-from main import app
 import pytest
 
 
@@ -12,9 +7,7 @@ import pytest
 async def test_hello_world_endpoint(client):
     esperado = {"message": "Hello World!!"}
 
-    resultado = await client.get(
-        "http://127.0.0.1:8000/hello_world"
-    )   
+    resultado = await client.get("http://127.0.0.1:8000/hello_world")
     assert esperado == resultado.json()
 
 
@@ -25,9 +18,6 @@ async def test_soma_endpoint(client):
 
     esperado = {"message": num1 + num2}
 
-    resultado = await client.get(
-        f"http://127.0.0.1:8000/soma/num1/{num1}/num2/{num2}"
-    )   
-
+    resultado = await client.get(f"http://127.0.0.1:8000/soma/num1/{num1}/num2/{num2}")
 
     assert esperado == resultado.json()
