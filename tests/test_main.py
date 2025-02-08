@@ -1,24 +1,33 @@
 import httpx
 import random
 
-def test_hello_world_endpoint():
+from typing import AsyncGenerator
+from httpx import ASGITransport
+from httpx import AsyncClient
+from main import app
+import pytest
+
+
+@pytest.mark.asyncio
+async def test_hello_world_endpoint(client):
     esperado = {"message": "Hello World!!"}
-    resultado = httpx.get(
+
+    resultado = await client.get(
         "http://127.0.0.1:8000/hello_world"
-    ).json()
+    )   
+    assert esperado == resultado.json()
 
-    assert esperado == resultado
 
-
-def test_soma_endpoint():
+@pytest.mark.asyncio
+async def test_soma_endpoint(client):
     num1 = random.randint(1, 100)
     num2 = random.randint(1, 100)
 
     esperado = {"message": num1 + num2}
 
-    resultado = httpx.get(
+    resultado = await client.get(
         f"http://127.0.0.1:8000/soma/num1/{num1}/num2/{num2}"
-    ).json()
+    )   
 
 
-    assert esperado == resultado
+    assert esperado == resultado.json()
